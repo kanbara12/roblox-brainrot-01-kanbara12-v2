@@ -1,6 +1,7 @@
--- ConveyorService: the beating heart of the loop. Brainrots roll out of the
--- SPAWN GATE, walk the glowing conveyor, and despawn at the EXIT portal
--- unless a player clicks one and buys it into a free base slot.
+-- ConveyorService: moves brainrots along the belt and handles buys.
+-- Brainrots roll out of the SPAWN GATE, walk the glowing conveyor, and
+-- despawn at the EXIT portal unless a player clicks one and buys it
+-- into a free base slot.
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")

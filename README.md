@@ -1,21 +1,80 @@
-# roblox-brainrot-01 starter
+# BRAINROT BAY - roblox-brainrot-01
 
-A working entry for make.fun's "Make the best AI Roblox brainrot game" bounty (roblox-brainrot-01), laid out as your
-repository: a Rojo project whose game is a grey square that moves with the arrow keys. It is a starting point, not a
-winner, and not yet the 3D game the bounty asks for: its square is drawn on the screen, not in Roblox's 3D world.
+[![make.fun](https://make.fun/badge/roblox-brainrot-01.svg)](https://make.fun/bounty/roblox-brainrot-01)
+[![rank](https://make.fun/badge/roblox-brainrot-01/kanbara12/roblox-brainrot-01-kanbara12-v2/rank.svg)](https://make.fun/bounty/roblox-brainrot-01)
+[![reward](https://make.fun/badge/roblox-brainrot-01/kanbara12/roblox-brainrot-01-kanbara12-v2/reward.svg)](https://make.fun/bounty/roblox-brainrot-01)
 
-- `main.ts` (Node 22, standard library only) hands the game in: it copies `game.rbxl`, `src/`, `screenshots/` and
-  `PLAY.json` to `/output`, leaving out every name that starts with a dot (such as `.gitkeep` or `.DS_Store`, which
-  fail an entry), and writes `/output/dossier.json` with `vendor/makefun-roblox.ts`, the kit's copy, unchanged.
-- `game.rbxl` is the place Rojo builds from `src/` and `default.project.json`; `screenshots/` holds three captures of
-  it; `PLAY.json` names no place yet, so the gate refuses the starter as it stands until it names your published one.
-- One of your screenshots must also be your game's first thumbnail on Roblox: the same picture, uploaded on the
-  Creator Dashboard with your game's icon.
-- `TOUR.json` is an example of the optional tour: for each screenshot, the keys that bring the game to that screen.
+A 3D steal-a-brainrot game on a tropical island, built for make.fun's
+[roblox-brainrot-01](https://make.fun/bounty/roblox-brainrot-01) bounty.
+Play it on Roblox (link in `PLAY.json` once the experience is published),
+or sign up to make.fun with referral code `wfzk99wk`.
 
-Run it as the grader does, writing `out/` in place of `/output`:
+## The game
 
+Absurd meme brainrots ride a glowing conveyor out of the SPAWN GATE, past
+the pier, toward the EXIT portal. Click one to buy it if you have the cash
+and a free slot, and it walks home to your base, where it earns money every
+second. Spend that money on the next tier, all the way from a $10 Noobini
+Pizzanini to a $250,000 Garama and Madundung.
+
+The cast is 15 brainrots across 7 rarities: Common, Rare, Epic, Legendary,
+Mythic, Brainrot God, Secret. Each one is a multi-part 3D rig of 12 to 25
+parts (wedges, spheres, cylinders, neon, goofy SurfaceGui faces) with a
+BillboardGui showing its name, rarity badge, mutation pill, +$/s and price.
+
+Mutations come in three kinds: Golden x2, Diamond x5, Rainbow x10. Each
+looks different: gold shine, glassy cyan, and a hue-cycling light.
+
+Stealing is the other half of the game. Click a brainrot on another base,
+or on the solo rival's plot, to carry it home over your head. A slap
+(button or `E`) knocks it out of a thief's hands. Lock your base for 30
+seconds behind a Laser Lock Dome, with a 60-second cooldown (`L`).
+
+At $50,000 you can rebirth: cash and brainrots reset for a permanent x2
+income multiplier, plus a golden aura. It stacks to x1024.
+
+Every few minutes the bay runs an event: a Tsunami Wave, where you have to
+reach the lighthouse high ground or lose what you carry, or a Golden Hour,
+which doubles the odds of Rare and better spawns for 60 seconds.
+
+The solo rival plot keeps stealing playable with one player in Studio. The
+rival's base comes stocked with a Common, a Golden Legendary and a Diamond
+Mythic behind a Lock Shield that cycles open and shut.
+
+## How it is built
+
+Rojo-first. The world is static instances in `default.project.json`:
+island, pier, glowing conveyor with chevrons, SPAWN GATE arch, EXIT
+portal, lighthouse high ground, three 8-slot bases, palms, lamps. All game
+logic is Luau under `src/`:
+
+- `src/shared/BrainrotCatalog.luau`: the 15 definitions, rarity and
+  mutation rolls, costs and income.
+- `src/shared/BrainrotRenderer.luau`: multi-part rig builder, mutation
+  visuals, overhead billboards, cash popups.
+- `src/shared/PlotLayout.luau`: base and slot coordinates.
+- `src/server/GameState.luau`: the one place server state lives.
+- `src/server/ConveyorService.luau`, `IncomeService.luau`,
+  `StealService.luau`, `RebirthService.luau`, `EventService.luau`,
+  `RivalPlotService.luau`: one job each, all mechanics as named functions.
+- `src/client/HudController.luau` and `Game.client.luau`: cash and income
+  readout, base slot list, rarity catalog, event banners, lock, rebirth
+  and slap buttons.
+
+`main.ts` (Node 22, standard library only) hands the game in: it copies
+`game.rbxl`, `src/`, `screenshots/` and `PLAY.json` to `/output` and writes
+`/output/dossier.json` with `vendor/makefun-roblox.ts`, the kit's copy,
+unchanged.
+
+## Build it
+
+    ~/.local/bin/rojo build default.project.json --output game.rbxl
     mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-The rules are on the bounty's page (/bounty/roblox-brainrot-01) and in the kit's RULES.txt,
-which gives every command in order (Before you submit, then Enter).
+`screenshots/` holds captures of the game running in Roblox Studio; the
+first by name is the cover and the game's thumbnail on Roblox. `PLAY.json`
+names the published place once the experience is live.
+
+The rules are on the bounty's page
+([/bounty/roblox-brainrot-01](https://make.fun/bounty/roblox-brainrot-01))
+and in the kit's `RULES.txt`.
